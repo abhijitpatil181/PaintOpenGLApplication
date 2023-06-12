@@ -6,6 +6,7 @@
 #include <QTreeView>
 #include <QSplitter>
 #include <QStandardItemModel>
+#include <qlabel.h>
 
 PaintApplication::PaintApplication(QWidget *parent)
     : QMainWindow(parent)
@@ -14,12 +15,8 @@ PaintApplication::PaintApplication(QWidget *parent)
 
     openglWindow = new OpenGLWindow(this);
 
-
-  
-
     // Create the QTreeView widget
     QTreeView* treeView = new QTreeView(this); 
-
 
     // Create the model for the QTreeView
     QStandardItemModel* model = new QStandardItemModel(this);
@@ -48,6 +45,13 @@ PaintApplication::PaintApplication(QWidget *parent)
 
 
     QHBoxLayout* layout = new QHBoxLayout; 
+
+    QLabel* label = new QLabel("Select Shape");
+
+    // Add the QLabel to the layout
+    layout->addWidget(label);
+
+    //add buttons
     layout->addWidget(ui.Line_Button);
     layout->addWidget(ui.Circle_Button);
     layout->addWidget(ui.Rectangle_Button);
@@ -65,19 +69,11 @@ PaintApplication::PaintApplication(QWidget *parent)
     setCentralWidget(centralWidget);
 
 
-    
-    
-    //connect(ui.Line_Button, SIGNAL(clicked()), this, SLOT(on_Line_Button_click()));
-    //connect(ui.Circle_Button, SIGNAL(clicked()), this, SLOT(on_Circle_Button_click()));
-    //connect(ui.Rectangle_Button, SIGNAL(clicked()), this, SLOT(on_Rectangle_Button_click()));
-
-
-
     connect(ui.Line_Button, &QPushButton::clicked, this, [this]() 
         {
         OpenGLWindow::drawLineMode = !OpenGLWindow::drawLineMode; // Toggle the drawLineMode flag
         if (OpenGLWindow::drawLineMode)
-            ui.Line_Button->setStyleSheet("background-color: red;");
+            ui.Line_Button->setStyleSheet("background-color: green;");
         else
             ui.Line_Button->setStyleSheet("");
         });
@@ -86,7 +82,7 @@ PaintApplication::PaintApplication(QWidget *parent)
         {
         OpenGLWindow::drawCircleMode = !OpenGLWindow::drawCircleMode; // Toggle the drawCircleMode flag
         if (OpenGLWindow::drawCircleMode)
-            ui.Circle_Button->setStyleSheet("background-color: red;");
+            ui.Circle_Button->setStyleSheet("background-color: green;");
         else
             ui.Circle_Button->setStyleSheet("");
         });
@@ -96,7 +92,7 @@ PaintApplication::PaintApplication(QWidget *parent)
         {
         OpenGLWindow::drawRectangleMode = !OpenGLWindow::drawRectangleMode; // Toggle the drawRectangleMode flag
         if (OpenGLWindow::drawRectangleMode)
-            ui.Rectangle_Button->setStyleSheet("background-color: red;");
+            ui.Rectangle_Button->setStyleSheet("background-color: green;");
         else
             ui.Rectangle_Button->setStyleSheet("");
         });
@@ -105,7 +101,7 @@ PaintApplication::PaintApplication(QWidget *parent)
         {
         OpenGLWindow::drawPolygonMode = !OpenGLWindow::drawPolygonMode; // Toggle the drawPolygonMode flag
         if (OpenGLWindow::drawPolygonMode)
-            ui.Polygon_Button->setStyleSheet("background-color: red;");
+            ui.Polygon_Button->setStyleSheet("background-color: green;");
         else
             ui.Polygon_Button->setStyleSheet("");
         });
@@ -119,80 +115,11 @@ PaintApplication::PaintApplication(QWidget *parent)
         });
 
 
-    //connect(treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &PaintApplication::onSelectionChanged);
-   // connect(openglWindow, &OpenGLWindow::lineCreated, this, &PaintApplication::onLineCreated);
-
-   /* connect(treeView, &QTreeView::clicked, this, [this,model](const QModelIndex& index) {
-        QStandardItem* selectedItem = model->itemFromIndex(index);
-        QString shapeName = selectedItem->text();
-        openglWindow->highlightShape(shapeName);
-        });*/
+   
 }
 
 PaintApplication::~PaintApplication()
 {}
-//void PaintApplication::onSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
-//{
-//    Q_UNUSED(deselected); // Avoid unused parameter warning
-//
-//    // Get the selected item from the model
-//    QModelIndexList selectedIndexes = selected.indexes();
-//    if (!selectedIndexes.isEmpty())
-//    {
-//        QModelIndex selectedIndex = selectedIndexes.first();
-//        QStandardItem* selectedItem = model->itemFromIndex(selectedIndex);
-//
-//        // Get the selected item's text
-//        QString selectedText = selectedItem->text();
-//
-//        // Update the OpenGLWindow based on the selected item's text
-//        if (selectedText == "Line")
-//        {
-//            OpenGLWindow::drawLineMode = true;
-//            OpenGLWindow::drawCircleMode = false;
-//            OpenGLWindow::drawRectangleMode = false;
-//            OpenGLWindow::drawPolygonMode = false;
-//        }
-//        else if (selectedText == "Circle")
-//        {
-//            OpenGLWindow::drawLineMode = false;
-//            OpenGLWindow::drawCircleMode = true;
-//            OpenGLWindow::drawRectangleMode = false;
-//            OpenGLWindow::drawPolygonMode = false;
-//        }
-//        else if (selectedText == "Rectangle")
-//        {
-//            OpenGLWindow::drawLineMode = false;
-//            OpenGLWindow::drawCircleMode = false;
-//            OpenGLWindow::drawRectangleMode = true;
-//            OpenGLWindow::drawPolygonMode = false;
-//        }
-//        else if (selectedText == "Polygon")
-//        {
-//            OpenGLWindow::drawLineMode = false;
-//            OpenGLWindow::drawCircleMode = false;
-//            OpenGLWindow::drawRectangleMode = false;
-//            OpenGLWindow::drawPolygonMode = true;
-//        }
-//
-//        // Trigger a repaint of the OpenGLWindow
-//        openglWindow->update();
-//    }
-//}
 
-//void PaintApplication::onLineCreated(const QString& lineName)
-//{
-//    // Add the line name to the QTreeView model
-//    QStandardItem* lineItem = new QStandardItem(lineName);
-//    model->appendRow(lineItem);
-//}
 
-//void PaintApplication::on_Line_Button_click()
-//{
-//}
-//void PaintApplication::on_Circle_Button_click() {
-//    QMessageBox::information(this, tr("Title"), tr("The Circle Creator"));
-//}
-//void PaintApplication::on_Rectangle_Button_click() {
-//    QMessageBox::information(this, tr("Title"), tr("The Rectangle Creator"));
-//}
+

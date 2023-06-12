@@ -112,17 +112,14 @@ void OpenGLWindow::paintGL()
 
 	
 	if (drawLineMode)
-	{
-		
-			QOpenGLVertexArrayObject::Binder vaoBinder(&m_lineVao);
-			glBindBuffer(GL_ARRAY_BUFFER, m_lineVbo);
-			glBufferData(GL_ARRAY_BUFFER, lineVertices.size() * sizeof(float), lineVertices.data(), GL_STATIC_DRAW);
-			glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-			glEnableVertexAttribArray(m_posAttr);
-			glDrawArrays(GL_LINES, 0, lineVertices.size() / 3);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	    
+	{		
+		QOpenGLVertexArrayObject::Binder vaoBinder(&m_lineVao);
+		glBindBuffer(GL_ARRAY_BUFFER, m_lineVbo);
+		glBufferData(GL_ARRAY_BUFFER, lineVertices.size() * sizeof(float), lineVertices.data(), GL_STATIC_DRAW);
+		glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+		glEnableVertexAttribArray(m_posAttr);
+		glDrawArrays(GL_LINES, 0, lineVertices.size() / 3);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		
 	}
 
