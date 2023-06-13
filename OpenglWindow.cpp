@@ -112,14 +112,16 @@ void OpenGLWindow::paintGL()
 
 	
 	if (drawLineMode)
-	{		
-		QOpenGLVertexArrayObject::Binder vaoBinder(&m_lineVao);
-		glBindBuffer(GL_ARRAY_BUFFER, m_lineVbo);
-		glBufferData(GL_ARRAY_BUFFER, lineVertices.size() * sizeof(float), lineVertices.data(), GL_STATIC_DRAW);
-		glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-		glEnableVertexAttribArray(m_posAttr);
-		glDrawArrays(GL_LINES, 0, lineVertices.size() / 3);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	{	
+		for (int i = 0; i < geometrySets.size(); i++) {
+			QOpenGLVertexArrayObject::Binder vaoBinder(&m_lineVao);
+			glBindBuffer(GL_ARRAY_BUFFER, m_lineVbo);
+			glBufferData(GL_ARRAY_BUFFER, geometrySets[i].size() * sizeof(float), geometrySets[i].data(), GL_DYNAMIC_DRAW);
+			glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+			glEnableVertexAttribArray(m_posAttr);
+			glDrawArrays(GL_LINES, 0, geometrySets[i].size() / 3);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+		}
 		
 	}
 
@@ -193,8 +195,11 @@ void OpenGLWindow::mousePressEvent(QMouseEvent* event)
 		
 		if (lineVertices.size()%6==0)
 		{
-			emit lineCreated("Line");
+			LineCount++;
+			emit lineCreated("Line ");
+			lineVertices.clear();
 		}
+		
 		
 		
 	}
@@ -210,14 +215,10 @@ void OpenGLWindow::mousePressEvent(QMouseEvent* event)
 		QPoint mousePos = event->pos();
 		createRectangle(mousePos);
 
-		if (rectangleVertices.size() == 24)
-		{
-			createRectangle(mousePos);
-			
-		}		
+		
 		if (rectangleVertices.size() % 24 == 0)
 		{
-
+			RectangleCount++;
 			emit lineCreated("Rectangle");
 
 		}
@@ -250,11 +251,11 @@ void OpenGLWindow::createLine(QPoint mousePos)
 	lineVertices.push_back(y);
 	lineVertices.push_back(0.0f);
 
-	//geometrySets.push_back(lineVertices);
+	geometrySets.push_back(lineVertices);
 	
-		glBindBuffer(GL_ARRAY_BUFFER, m_lineVbo);
+		/*glBindBuffer(GL_ARRAY_BUFFER, m_lineVbo);
 		glBufferData(GL_ARRAY_BUFFER, lineVertices.size() * sizeof(float), lineVertices.data(), GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);*/
 	
 	update();
 
@@ -263,6 +264,8 @@ void OpenGLWindow::createLine(QPoint mousePos)
 
 void OpenGLWindow::createCircle(QPoint mousePos)
 {
+	circleVertices.clear();
+
 	int viewportWidth = width();
 	int viewportHeight = height();
 
@@ -283,7 +286,7 @@ void OpenGLWindow::createCircle(QPoint mousePos)
 
 		float radius = std::sqrt((x - center.x()) * (x - center.x()) + (y - center.y()) * (y - center.y()));
 
-		circleVertices.clear();
+		//circleVertices.clear();
 
 		for (int i = 0; i <= numSegments; ++i)
 		{
@@ -298,16 +301,17 @@ void OpenGLWindow::createCircle(QPoint mousePos)
 		}
 
 		geometrySets.push_back(circleVertices);
-		glBindBuffer(GL_ARRAY_BUFFER, m_circleVbo);
+		/*glBindBuffer(GL_ARRAY_BUFFER, m_circleVbo);
 		glBufferData(GL_ARRAY_BUFFER, circleVertices.size() * sizeof(float), circleVertices.data(),GL_DYNAMIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);*/
 
 		centerSet = false;
 
 
-		if (circleVertices.size() == 303)
+		if (circleVertices.size() % 303==0)
 		{
-			emit lineCreated("Circle");
+			CircleCount++;
+			emit lineCreated("Circle" );
 		}
 	}
 

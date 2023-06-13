@@ -38,7 +38,9 @@ public:
     void updateName();
 
     static std::vector<QString> nameList;
-
+    int LineCount = 0;
+    int CircleCount = 0;
+    int RectangleCount = 0;
 
 
 private:
