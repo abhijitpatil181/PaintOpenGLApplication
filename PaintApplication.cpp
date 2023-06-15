@@ -16,7 +16,7 @@ PaintApplication::PaintApplication(QWidget *parent)
     openglWindow = new OpenGLWindow(this);
 
     // Create the QTreeView widget
-    QTreeView* treeView = new QTreeView(this); 
+    treeView = new QTreeView(this); 
 
     // Create the model for the QTreeView
     QStandardItemModel* model = new QStandardItemModel(this);
@@ -37,6 +37,7 @@ PaintApplication::PaintApplication(QWidget *parent)
     // Add the treeView widget to the splitter
     splitter->addWidget(treeView); 
 
+
     // Add the openglWindow widget to the splitter
     splitter->addWidget(openglWindow); 
 
@@ -55,7 +56,7 @@ PaintApplication::PaintApplication(QWidget *parent)
     layout->addWidget(ui.Line_Button);
     layout->addWidget(ui.Circle_Button);
     layout->addWidget(ui.Rectangle_Button);
-    layout->addWidget(ui.Polygon_Button);
+    
 
 
     QVBoxLayout* vLayout = new QVBoxLayout;
@@ -97,14 +98,14 @@ PaintApplication::PaintApplication(QWidget *parent)
             ui.Rectangle_Button->setStyleSheet("");
         });
 
-    connect(ui.Polygon_Button, &QPushButton::clicked, this, [this]() 
-        {
-        OpenGLWindow::drawPolygonMode = !OpenGLWindow::drawPolygonMode; // Toggle the drawPolygonMode flag
-        if (OpenGLWindow::drawPolygonMode)
-            ui.Polygon_Button->setStyleSheet("background-color: green;");
-        else
-            ui.Polygon_Button->setStyleSheet("");
-        });
+    //connect(ui.Polygon_Button, &QPushButton::clicked, this, [this]() 
+    //    {
+    //    OpenGLWindow::drawPolygonMode = !OpenGLWindow::drawPolygonMode; // Toggle the drawPolygonMode flag
+    //    if (OpenGLWindow::drawPolygonMode)
+    //        ui.Polygon_Button->setStyleSheet("background-color: green;");
+    //    else
+    //        ui.Polygon_Button->setStyleSheet("");
+    //    });
 
    
 
@@ -112,6 +113,19 @@ PaintApplication::PaintApplication(QWidget *parent)
         {
         QStandardItem* item = new QStandardItem(name);
         model->appendRow(item);
+        });
+
+    connect(treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, [this]() {
+        QModelIndexList selectedIndexes = treeView->selectionModel()->selectedIndexes();
+        if (!selectedIndexes.isEmpty()) {
+            QModelIndex selectedIndex = selectedIndexes.first();
+            // Retrieve the necessary information from the selected item
+            int lineId = selectedIndex.row();
+            // Trigger a repaint of the OpenGL widget
+            OpenGLWindow::isHighLighted = true;
+            openglWindow->selectedGeometryList.push_back(Geometry::geometryList[lineId]);
+            openglWindow->update();
+        }
         });
 
 

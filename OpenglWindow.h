@@ -4,8 +4,12 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 #include <string>
-
 #include <QString>
+#include "Geometry.h"
+#include "Line.h"
+#include "Circle.h"
+#include "Rectangles.h"
+#include <memory>
 
 class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions 
 {
@@ -15,33 +19,28 @@ class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions
 
 public:
     OpenGLWindow(QWidget* parent = nullptr);
+    
+    //Geometry* geometry;
 
-
-
+    std::shared_ptr<Geometry> geometry;
+    static int treeItemCount;
     void initializeGL()override;
     void paintGL()override;
     void resizeGL(int width, int height) override;
     void mousePressEvent(QMouseEvent* event) override;
-
-    std::vector<float> rectangleVertices;
-
-
-
-    void createLine(QPoint mousePos);
-    void createCircle(QPoint mousePos);
-    void createRectangle(QPoint mousePos);
-    void createPolygon(QPoint mousePos);
+  
     static bool drawLineMode;
     static bool drawCircleMode;
     static bool drawRectangleMode;
     static bool drawPolygonMode;
-    void updateName();
-
+    static std::vector<std::vector<float>> geometrySets;
+    
     static std::vector<QString> nameList;
-    int LineCount = 0;
-    int CircleCount = 0;
-    int RectangleCount = 0;
-
+    static int lineCounter;
+    static int circleCounter;
+    static int rectangleCounter;
+    static bool isHighLighted ;
+    std::vector<std::vector<float>> selectedGeometryList;
 
 private:
     GLuint m_posAttr;
@@ -51,33 +50,14 @@ private:
     QOpenGLShaderProgram* m_program;
 
 
-    GLuint m_lineVbo;
-    GLuint m_circleVbo;
-    GLuint m_rectangleVbo;
-    GLuint m_polygonVbo;
+    GLuint m_selectedGeometryVbo;
+    GLuint m_geometryVbo;
 
-    QOpenGLVertexArrayObject m_lineVao, m_circleVao, m_rectangleVao, m_polygonVao;
-  
-    std::vector<float> lineVertices;
-    std::vector<float> circleVertices;
-
-
-    std::vector<std::vector<float>> geometrySets;
-    std::vector<std::vector<float>> rectangleSets;
-
-    std::vector<std::vector<float>> polygonSets;
-   
-    std::vector<float> polygonVertices;
-
-    
-    QMatrix4x4 projectionMatrix;
-    QMatrix4x4 modelMatrix;
-    QMatrix4x4 viewMatrix;
- 
-
+    QOpenGLVertexArrayObject m_selectedGeometryVao, m_geometryVao;
+      
 signals:
     void lineCreated(const QString& name);
 
-
 };
+
 

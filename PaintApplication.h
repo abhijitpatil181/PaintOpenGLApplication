@@ -4,8 +4,9 @@
 #include "ui_PaintApplication.h"
 #include "OpenglWindow.h"
 #include <QObject>
-
+#include "Geometry.h"
 #include <QStandardItemModel>
+#include <QTreeView>
 //#include "Line.h"
 
 class PaintApplication : public QMainWindow
@@ -23,9 +24,8 @@ public:
 private:
     Ui::PaintApplicationClass ui;
     OpenGLWindow* openglWindow;
-    //QStandardItemModel* model; 
-
+    QTreeView* treeView;
 
 private slots:
-   // void onSelectionChanged(const QModelIndex& index);
+   
 };

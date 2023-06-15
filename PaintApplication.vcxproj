@@ -144,15 +144,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Rectangles.cpp" />
     <QtRcc Include="PaintApplication.qrc" />
     <QtUic Include="PaintApplication.ui" />
     <QtMoc Include="PaintApplication.h" />
+    <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="Line.cpp" />
     <ClCompile Include="OpenglWindow.cpp" />
     <ClCompile Include="PaintApplication.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="OpenglWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Circle.h" />
+    <ClInclude Include="Geometry.h" />
+    <ClInclude Include="Line.h" />
+    <ClInclude Include="Rectangles.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
