@@ -27,13 +27,6 @@
      <item row="0" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QPushButton" name="Polygon_Button">
-         <property name="text">
-          <string>Polygon</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QPushButton" name="Rectangle_Button">
          <property name="text">
           <string>Rectangle</string>
@@ -60,6 +53,13 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QPushButton" name="Reset_Button">
+         <property name="text">
+          <string>Reset</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
     </layout>
@@ -71,7 +71,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

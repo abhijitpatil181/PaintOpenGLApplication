@@ -13,6 +13,8 @@
 #include <unordered_map>
 #include <QObject>
 
+
+
 class Geometry
 {
 public:
@@ -20,6 +22,7 @@ public:
 	static std::vector<std::vector<float>> geometryList;
 	/*static std::unordered_map<QString, std::vector<float>>geometrySet;
 	static int count ;*/
+	
 
 	Geometry(){}
 	virtual void calculateRequiredData(QPoint mousePos, int viewportWidth, int viewportHeight)=0;

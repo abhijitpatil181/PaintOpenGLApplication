@@ -25,6 +25,7 @@ private:
     Ui::PaintApplicationClass ui;
     OpenGLWindow* openglWindow;
     QTreeView* treeView;
+    Intersection ipoint;
 
 private slots:
    

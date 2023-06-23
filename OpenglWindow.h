@@ -10,6 +10,7 @@
 #include "Circle.h"
 #include "Rectangles.h"
 #include <memory>
+#include "Intersection.h"
 
 class OpenGLWindow : public QOpenGLWidget, protected QOpenGLFunctions 
 {
@@ -28,7 +29,9 @@ public:
     void paintGL()override;
     void resizeGL(int width, int height) override;
     void mousePressEvent(QMouseEvent* event) override;
-  
+    void calCulateCircularPoint();
+    void resetWindow();
+
     static bool drawLineMode;
     static bool drawCircleMode;
     static bool drawRectangleMode;
@@ -40,7 +43,10 @@ public:
     static int circleCounter;
     static int rectangleCounter;
     static bool isHighLighted ;
+
     std::vector<std::vector<float>> selectedGeometryList;
+
+    std::vector<std::vector<float>>  Ipoints;
 
 private:
     GLuint m_posAttr;
@@ -50,10 +56,10 @@ private:
     QOpenGLShaderProgram* m_program;
 
 
-    GLuint m_selectedGeometryVbo;
+    GLuint m_selectedGeometryVbo,m_intersectionPointVbo;
     GLuint m_geometryVbo;
 
-    QOpenGLVertexArrayObject m_selectedGeometryVao, m_geometryVao;
+    QOpenGLVertexArrayObject m_selectedGeometryVao, m_geometryVao, m_intersectionPointVao;
       
 signals:
     void lineCreated(const QString& name);

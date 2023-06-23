@@ -56,7 +56,7 @@ PaintApplication::PaintApplication(QWidget *parent)
     layout->addWidget(ui.Line_Button);
     layout->addWidget(ui.Circle_Button);
     layout->addWidget(ui.Rectangle_Button);
-    
+    layout->addWidget(ui.Reset_Button);
 
 
     QVBoxLayout* vLayout = new QVBoxLayout;
@@ -98,14 +98,17 @@ PaintApplication::PaintApplication(QWidget *parent)
             ui.Rectangle_Button->setStyleSheet("");
         });
 
-    //connect(ui.Polygon_Button, &QPushButton::clicked, this, [this]() 
-    //    {
-    //    OpenGLWindow::drawPolygonMode = !OpenGLWindow::drawPolygonMode; // Toggle the drawPolygonMode flag
-    //    if (OpenGLWindow::drawPolygonMode)
-    //        ui.Polygon_Button->setStyleSheet("background-color: green;");
-    //    else
-    //        ui.Polygon_Button->setStyleSheet("");
-    //    });
+    connect(ui.Reset_Button, &QPushButton::clicked, this, [this]()
+        {
+           
+            openglWindow->resetWindow();
+        });
+
+    connect(ui.Reset_Button, &QPushButton::clicked, this, [model]()
+        {
+
+            model->clear();
+        });
 
    
 
@@ -115,19 +118,34 @@ PaintApplication::PaintApplication(QWidget *parent)
         model->appendRow(item);
         });
 
+    treeView->setSelectionMode(QAbstractItemView::MultiSelection);
+
     connect(treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, [this]() {
         QModelIndexList selectedIndexes = treeView->selectionModel()->selectedIndexes();
         if (!selectedIndexes.isEmpty()) {
-            QModelIndex selectedIndex = selectedIndexes.first();
+            QModelIndex selectedIndex = selectedIndexes.last();
             // Retrieve the necessary information from the selected item
             int lineId = selectedIndex.row();
             // Trigger a repaint of the OpenGL widget
             OpenGLWindow::isHighLighted = true;
             openglWindow->selectedGeometryList.push_back(Geometry::geometryList[lineId]);
+
+
+            for (int i = 0; i < openglWindow->selectedGeometryList.size()-1; i++)
+            {
+
+                for (int j = i+1; j < openglWindow->selectedGeometryList.size(); j++)
+                {
+                  
+                    ipoint.findIntersectionBetItems(openglWindow->selectedGeometryList[i], openglWindow->selectedGeometryList[j]);                    
+                }
+               
+            }
             openglWindow->update();
         }
         });
 
+    
 
    
 }

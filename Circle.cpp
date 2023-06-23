@@ -3,10 +3,7 @@
 
 void Circle::calculateRequiredData(QPoint mousePos, int viewportWidth, int viewportHeight)
 {
-	//verticesList.clear();
-
-	/*int viewportWidth = width();
-	int viewportHeight = height();*/
+	
 
 	float x = (2.0f * mousePos.x() / viewportWidth) - 1.0f;
 	float y = 1.0f - (2.0f * mousePos.y() / viewportHeight);
@@ -25,7 +22,6 @@ void Circle::calculateRequiredData(QPoint mousePos, int viewportWidth, int viewp
 
 		float radius = std::sqrt((x - center.x()) * (x - center.x()) + (y - center.y()) * (y - center.y()));
 
-		//circleVertices.clear();
 
 		for (int i = 0; i <= numSegments; ++i)
 		{
@@ -45,13 +41,6 @@ void Circle::calculateRequiredData(QPoint mousePos, int viewportWidth, int viewp
 		centerSet = false;
 		verticesList.clear();
 
-		if (verticesList.size() % 303 == 0)
-		{
-			//CircleCount++;
-			//emit lineCreated("Circle");
-			
-		}
 	}
 
-	//update();
 }

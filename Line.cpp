@@ -11,7 +11,6 @@ void Line::calculateRequiredData(QPoint mousePos,int viewportWidth,int viewportH
 	verticesList.push_back(x);
 	verticesList.push_back(y);
 	verticesList.push_back(0.0f);
-
 	
 	if (verticesList.size() % 6 == 0)
 	{

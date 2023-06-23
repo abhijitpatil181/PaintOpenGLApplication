@@ -72,6 +72,8 @@ void OpenGLWindow::initializeGL()
 
 	glGenBuffers(1, &m_selectedGeometryVbo);
 	glGenBuffers(1, &m_geometryVbo);
+	glGenBuffers(1, &m_intersectionPointVbo);
+
 	
 	// bind the vertex array object of line
 	m_selectedGeometryVao.create();
@@ -86,6 +88,13 @@ void OpenGLWindow::initializeGL()
 
 	//unbind the vertex array object of circle
 	m_geometryVao.release();
+
+	//bind the vertex array object of intersection Point
+	m_intersectionPointVao.create();
+	m_intersectionPointVao.bind();
+
+	//unbind the vertex array object of intersection Point
+	m_intersectionPointVao.release();
 
 	
 }
@@ -125,13 +134,38 @@ void OpenGLWindow::paintGL()
 				glEnableVertexAttribArray(m_posAttr);
 				glDrawArrays(GL_LINE_LOOP, 0, selectedGeometryList[i].size() / 3);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
+				glDisableVertexAttribArray(m_posAttr);
 			}
-			selectedGeometryList.clear();
+			//selectedGeometryList.clear();
 			isHighLighted = false;
+
+			//calCulateCircularPoint();
+			if (selectedGeometryList.size() > 1)
+			{
+				calCulateCircularPoint();	
+			}
+			
+			//QMessageBox::information(nullptr, "Message", Ipoints.size());
+			for (int i = 0; i < Ipoints.size(); i++)
+			{
+				m_program->setUniformValue("color", QVector4D(0.0f, 0.0f, 0.0f, 1.0f));
+				QOpenGLVertexArrayObject::Binder vaoBinder(&m_intersectionPointVao);
+				glBindBuffer(GL_ARRAY_BUFFER, m_intersectionPointVbo);
+				glBufferData(GL_ARRAY_BUFFER, Ipoints[i].size() * sizeof(float), Ipoints[i].data(), GL_DYNAMIC_DRAW);
+				glVertexAttribPointer(m_posAttr, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+				glEnableVertexAttribArray(m_posAttr);
+				glDrawArrays(GL_LINE_LOOP, 0, Ipoints[i].size() / 3);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+				glDisableVertexAttribArray(m_posAttr);
+			}
+			
+
+
 		}
+		
 
 	}
-	
+
 	m_program->release();
 }
 
@@ -223,6 +257,47 @@ void OpenGLWindow::mousePressEvent(QMouseEvent* event)
 
 	QOpenGLWidget::mousePressEvent(event);
 }
+
+void OpenGLWindow::calCulateCircularPoint()
+{
+	double theta = 0;
+	std::vector<float>point;
+	for (int j = 0; j < Intersection::intersectionPointList.size(); j++)
+	{
+		
+		const int numSegments = 100;
+
+		for (int i = 0; i <= numSegments; ++i)
+		{
+			float angle = 2.0f * M_PI * i / numSegments;
+			float cx = Intersection::intersectionPointList[j].x + 0.03f * std::cos(angle);
+			float cy = Intersection::intersectionPointList[j].y + 0.03f * std::sin(angle);
+
+			point.push_back(cx);
+			point.push_back(cy);
+			point.push_back(0.0f);
+
+		}
+		Ipoints.push_back(point);		
+		point.clear();
+	}
+		
+}
+
+void OpenGLWindow::resetWindow()
+{
+	Geometry::geometryList.clear();
+	selectedGeometryList.clear();
+	Ipoints.clear();
+	Intersection::intersectionPointList.clear();
+	OpenGLWindow::update();
+}
+	
+
+
+	
+
+
 
 
 

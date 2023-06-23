@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Intersection.cpp" />
     <ClCompile Include="Rectangles.cpp" />
     <QtRcc Include="PaintApplication.qrc" />
     <QtUic Include="PaintApplication.ui" />
@@ -161,6 +162,7 @@
   <ItemGroup>
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Geometry.h" />
+    <ClInclude Include="Intersection.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Rectangles.h" />
   </ItemGroup>
